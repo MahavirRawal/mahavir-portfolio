@@ -9,14 +9,6 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react(), tailwindcss()],
 
-    // ✅ Allow Kuberns domain when using: vite preview
-    preview: {
-      allowedHosts: [
-        'mahavir-portfolio-main-531d1dd.kuberns.cloud',
-        // If Kuberns changes the URL sometimes, you must add the new host here too.
-      ],
-    },
-
     define: {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
     },
@@ -27,8 +19,18 @@ export default defineConfig(({ mode }) => {
       },
     },
 
+    // ✅ Dev server settings (local)
     server: {
+      allowedHosts: true, // avoids host blocking if needed
       hmr: process.env.DISABLE_HMR !== 'true',
+    },
+
+    // ✅ This is what Kuberns uses (vite preview)
+    preview: {
+      allowedHosts: true,   // IMPORTANT: don't block Kuberns URL
+      host: true,           // listen on 0.0.0.0
+      port: 3000,
+      strictPort: true,
     },
   };
 });
